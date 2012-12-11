@@ -1,5 +1,5 @@
 import soundcloud
-import subprocess
+import sys
 import random
 import pyspeaker
 import time
@@ -33,7 +33,7 @@ class piTunesController:
 
 		request = {}
 		request['username'] = 'dj hawkins'
-		request['search'] = 'drum and bass'
+		request['search'] = self.default_search
 		request['message'] = 'this one is for my mum'
 
 		print request
@@ -139,9 +139,19 @@ class piTunesController:
 			print "Description:"+description
 	
 		return suggested_track
+
+	def set_default_search(self,search):
+		# fetch track to stream
+		self.default_search = search
+
 	
 def main():
-    controller = piTunesController()    
+    controller = piTunesController()   
+    default_search = sys.argv[1]
+    if(default_search==None):
+    	search_arg = "turkish hip hop"
+    
+    controller.set_default_search(default_search) 
     controller.run()
 
 if  __name__ =='__main__':main()
