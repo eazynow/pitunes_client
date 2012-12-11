@@ -88,6 +88,8 @@ class piTunesController:
 				# sleep for a bit
 				time.sleep(2)
 
+			self.player.stop()
+
 		except NameError:
 			print('NameError: %s (%s vs LibVLC %s)' % (sys.exc_info()[1],
 					__version__,
