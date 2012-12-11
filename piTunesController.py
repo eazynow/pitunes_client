@@ -46,6 +46,9 @@ class piTunesController:
 		self.say("Play a track")
 		try:
 			url = track['stream_url']
+			
+			print "Playing:" + url 
+
 			media = self.instance.media_new(url)
 
 			self.player.set_media(media)
