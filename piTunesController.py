@@ -25,8 +25,26 @@ class piTunesController:
 		self.instance = Instance("")
 		self.player = self.instance.media_player_new()
 
-	def announce_track(self,track):
-		self.say("Announce a track %s" % track)
+	def announce_track(self,track_request,suggested_track):
+
+		username = 	track_request['username']
+		message = track_request['message']	
+		title = suggested_track['track_details'].title
+		description = suggested_track['track_details'].description	
+		
+		if username:
+			self.say("This ones going out for  %s" % username)
+			time.sleep(2)
+
+		if (message and username):
+			self.say("%s has asked me to say %s" % (username, message))
+			time.sleep(2)
+
+		if title:
+			self.say("Its a cheeky little number called  %s" % title)
+			time.sleep(2)
+		self.say("Let me hear you say yo")
+		time.sleep(2)
 
 	def call_request_api(self):
 		# return dummy request for now
@@ -53,11 +71,12 @@ class piTunesController:
 
 			self.player.set_media(media)
 			self.player.play()
-
+			time.sleep(5)
+			
 			# wait until track completes
 			while(self.player.is_playing()):
 				# sleep for a bit
-				time.sleep(1)
+				time.sleep(2)
 
 		except NameError:
 			print('NameError: %s (%s vs LibVLC %s)' % (sys.exc_info()[1],
@@ -89,7 +108,7 @@ class piTunesController:
 					self.filler_speech()
 
 				# announce track
-				self.announce_track(track)
+				self.announce_track(next_track_req, track)
 				
 				# play track
 				self.play_track(track)
@@ -131,11 +150,10 @@ class piTunesController:
 
 
 
-		if title!= None:
-			self.say("time to play %s!" % title)
+		if title:
 			print "Title:"+title
 
-		if description!= None:
+		if description:
 			print "Description:"+description
 	
 		return suggested_track
