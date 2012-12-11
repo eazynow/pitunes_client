@@ -134,7 +134,8 @@ class piTunesController:
 		print "Searching for %s" % search
 		self.say("Searching for %s" % search)
 
-		tracks = self.client.get('/tracks', q=search)
+		#tracks = self.client.get('/tracks', q=search,duration={0:60000})
+		tracks = self.client.get('/tracks', q=search,duration={'from':0, 'to':60000})
 		if(tracks==None):
 			return None
 
