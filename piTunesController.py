@@ -1,6 +1,8 @@
 import soundcloud
 import subprocess
 import random
+import pyspeaker
+import time
 
 print "Starting piTunes\n"
 
@@ -8,6 +10,7 @@ class piTunesController:
 
 
 	def __init__(self):
+		pyspeaker.initSay()
 		print "Init piTunes controller"
 		self.client = soundcloud.Client(client_id='8da91e376c359e86e2ef2ea5f3008514')
 
@@ -20,7 +23,7 @@ class piTunesController:
 
 
 	def announce_track(self,track):
-		pass
+		self.say("Announce a track %s" % track)
 
 	def call_request_api(self):
 		# return dummy request for now
@@ -34,13 +37,18 @@ class piTunesController:
 		return request
 
 	def filler_speech(self):
-		pass
+		self.say("Filler time")
 
 	def play_track(self,track):
-		pass
+		self.say("Play a track")
+
+	def say(self, text):
+		pyspeaker.say(text, "-ven+m8 -k5 -s150")
+		time.sleep(2)
 
 	def run(self):
 		print "Starting piTunes controller"
+		self.say("Starting piTunes controller")
 
 		while(self.still_running):
 
@@ -72,6 +80,7 @@ class piTunesController:
 		# fetch track to stream
 
 		print "Searching for %s" % search
+		self.say("Searching for %s" % search)
 
 		tracks = self.client.get('/tracks', q=search)
 		if(tracks==None):
@@ -97,7 +106,10 @@ class piTunesController:
 		title = suggested_track['track_details'].title
 		description = suggested_track['track_details'].description
 
+
+
 		if title!= None:
+			self.say("time to play %s!" % title)
 			print "Title:"+title
 
 		if description!= None:
