@@ -1,3 +1,5 @@
+import urllib2
+import json
 import soundcloud
 import sys
 import random
@@ -49,19 +51,27 @@ class piTunesController:
 	def call_request_api(self):
 		# return dummy request for now
 
-		request = {}
-		request['username'] = 'dj hawkins'
-		request['search'] = self.default_search
-		request['message'] = 'this one is for my mum'
+		#request = {}
+		#request['username'] = 'dj hawkins'
+		#request['search'] = self.default_search
+		#request['message'] = 'this one is for my mum'
 
-		print request
+		#print request
+		url = "http://pitunes.herokuapp.com/api/next"
+		resp = urllib2.urlopen(url)
+		response_string = resp.read()
+		print response_string
+		request = json.loads(response_string)
+
 		return request
+		
+
+
 
 	def filler_speech(self):
 		self.say("Filler time")
 
 	def play_track(self,track):
-		self.say("Play a track")
 		try:
 			url = track['stream_url']
 			
