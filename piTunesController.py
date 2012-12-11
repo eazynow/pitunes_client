@@ -51,6 +51,11 @@ class piTunesController:
 			self.player.set_media(media)
 			self.player.play()
 
+			# wait until track completes
+			while(self.player.is_playing()):
+				# sleep for a bit
+				time.sleep(1)
+
 		except NameError:
 			print('NameError: %s (%s vs LibVLC %s)' % (sys.exc_info()[1],
 					__version__,
