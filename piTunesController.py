@@ -3,6 +3,7 @@ import subprocess
 import random
 import pyspeaker
 import time
+from vlc import Instance
 
 print "Starting piTunes\n"
 
@@ -21,6 +22,8 @@ class piTunesController:
                            password='pitunes')
 		self.still_running = True
 
+		self.instance = Instance("")
+		self.player = self.instance.media_player_new()
 
 	def announce_track(self,track):
 		self.say("Announce a track %s" % track)
@@ -41,6 +44,18 @@ class piTunesController:
 
 	def play_track(self,track):
 		self.say("Play a track")
+		try:
+			url = track['stream_url']
+			media = self.instance.media_new(url)
+
+			self.player.set_media(media)
+			self.player.play()
+
+		except NameError:
+			print('NameError: %s (%s vs LibVLC %s)' % (sys.exc_info()[1],
+					__version__,
+					libvlc_get_version()))
+			sys.exit(1)
 
 	def say(self, text):
 		pyspeaker.say(text, "-ven+m8 -k5 -s150")
